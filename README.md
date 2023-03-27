@@ -27,3 +27,7 @@ npm i
 ```bash
 npm run dev
 ```
+
+```bash
+backend/pocketbase serve
+```
