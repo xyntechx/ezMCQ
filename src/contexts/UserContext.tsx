@@ -1,4 +1,10 @@
-import { createContext, createSignal, JSX, useContext } from "solid-js";
+import {
+    createContext,
+    createEffect,
+    createSignal,
+    JSX,
+    useContext,
+} from "solid-js";
 import { pb } from "../utils/pocketbase";
 
 interface Props {
@@ -11,11 +17,17 @@ export const UserProvider = (props: Props) => {
     const [user, setUser] = createSignal(pb.authStore.model);
     pb.authStore.onChange(() => setUser(pb.authStore.model));
 
-    const [isVerified, setIsVerified] = createSignal(
-        localStorage.getItem("isVerified")
-            ? JSON.parse(localStorage.getItem("isVerified")!)
-            : false
-    );
+    const [isVerified, setIsVerified] = createSignal(false);
+
+    createEffect(() => {
+        if (user()) {
+            setIsVerified(
+                localStorage.getItem("isVerified")
+                    ? JSON.parse(localStorage.getItem("isVerified")!)
+                    : user()!.verified
+            );
+        }
+    });
 
     return (
         <UserContext.Provider
