@@ -1,0 +1,23 @@
+.message {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    padding: 1rem 2rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    background-color: transparent;
+    z-index: 10;
+}
+
+.close {
+    position: absolute;
+    right: 10px;
+    font-weight: 800;
+    font-size: 1rem;
+    outline: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+}
