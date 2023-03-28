@@ -2,6 +2,9 @@
     --color-main: #538bc8;
     --color-dark: #2d5390;
     --color-light: #8cc1e7;
+    --color-bg: #eee;
+    --color-sec-bg: #e0e0e0;
+    --color-text: #111;
 }
 
 html,
@@ -9,11 +12,16 @@ body {
     padding: 0;
     margin: 0;
     font-family: "Inter", sans-serif;
-    background-color: #eee;
-    color: #111;
+    background-color: var(--color-bg);
+    color: var(--color-text);
     overflow-x: hidden;
     scroll-behavior: smooth !important;
     transition: background-color 0.25s ease-in-out;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2rem;
 }
 
 a {
