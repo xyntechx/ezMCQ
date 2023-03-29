@@ -1,4 +1,4 @@
-import { Component, createSignal, onMount } from "solid-js";
+import { Component, createSignal, onMount, Show } from "solid-js";
 import { pb } from "../../utils/pocketbase";
 import { useUser } from "../../contexts/UserContext";
 import styles from "./styles.module.css";
@@ -99,82 +99,76 @@ const Auth: Component = () => {
                     setErrorMessage,
                 }}
             />
+
             <h1>ezMCQ</h1>
-            {isSignup() ? (
-                <>
-                    <input
-                        placeholder="Email"
-                        type="email"
-                        onInput={(e) => setEmail(e.currentTarget.value)}
-                        class={styles.input}
-                    />
-                    <input
-                        placeholder="Username"
-                        type="text"
-                        onInput={(e) => setUsername(e.currentTarget.value)}
-                        class={styles.input}
-                    />
-                    <input
-                        placeholder="Password"
-                        type="password"
-                        onInput={(e) => setPassword(e.currentTarget.value)}
-                        class={styles.input}
-                    />
-                    <input
-                        placeholder="Confirm Password"
-                        type="password"
-                        onInput={(e) => setPassword2(e.currentTarget.value)}
-                        class={styles.input}
-                    />
+
+            <Show when={isSignup()}>
+                <input
+                    placeholder="Email"
+                    type="email"
+                    onInput={(e) => setEmail(e.currentTarget.value)}
+                    class={styles.input}
+                />
+                <input
+                    placeholder="Username"
+                    type="text"
+                    onInput={(e) => setUsername(e.currentTarget.value)}
+                    class={styles.input}
+                />
+                <input
+                    placeholder="Password"
+                    type="password"
+                    onInput={(e) => setPassword(e.currentTarget.value)}
+                    class={styles.input}
+                />
+                <input
+                    placeholder="Confirm Password"
+                    type="password"
+                    onInput={(e) => setPassword2(e.currentTarget.value)}
+                    class={styles.input}
+                />
+                <button onClick={() => handleSignup()} class={styles.button}>
+                    {isLoading() ? "Loading..." : "Sign Up"}
+                </button>
+                <sub class={styles.sub}>
+                    Have an account?{" "}
                     <button
-                        onClick={() => handleSignup()}
-                        class={styles.button}
+                        onClick={() => setIsSignup(false)}
+                        class={styles.textBtn}
                     >
-                        {isLoading() ? "Loading..." : "Sign Up"}
-                    </button>
-                    <sub class={styles.sub}>
-                        Have an account?{" "}
-                        <button
-                            onClick={() => setIsSignup(false)}
-                            class={styles.textBtn}
-                        >
-                            Log in
-                        </button>{" "}
-                        instead!
-                    </sub>
-                </>
-            ) : (
-                <>
-                    <input
-                        placeholder="Username"
-                        type="text"
-                        onInput={(e) => setUsername(e.currentTarget.value)}
-                        class={styles.input}
-                    />
-                    <input
-                        placeholder="Password"
-                        type="password"
-                        onInput={(e) => setPassword(e.currentTarget.value)}
-                        class={styles.input}
-                    />
+                        Log in
+                    </button>{" "}
+                    instead!
+                </sub>
+            </Show>
+
+            <Show when={!isSignup()}>
+                <input
+                    placeholder="Username"
+                    type="text"
+                    onInput={(e) => setUsername(e.currentTarget.value)}
+                    class={styles.input}
+                />
+                <input
+                    placeholder="Password"
+                    type="password"
+                    onInput={(e) => setPassword(e.currentTarget.value)}
+                    class={styles.input}
+                />
+                <button onClick={() => handleLogin(true)} class={styles.button}>
+                    {isLoading() ? "Loading..." : "Log In"}
+                </button>
+                <sub class={styles.sub}>
+                    New to ezMCQ?{" "}
                     <button
-                        onClick={() => handleLogin(true)}
-                        class={styles.button}
+                        onClick={() => setIsSignup(true)}
+                        class={styles.textBtn}
                     >
-                        {isLoading() ? "Loading..." : "Log In"}
-                    </button>
-                    <sub class={styles.sub}>
-                        New to ezMCQ?{" "}
-                        <button
-                            onClick={() => setIsSignup(true)}
-                            class={styles.textBtn}
-                        >
-                            Sign up
-                        </button>{" "}
-                        instead!
-                    </sub>
-                </>
-            )}
+                        Sign up
+                    </button>{" "}
+                    instead!
+                </sub>
+            </Show>
         </div>
     );
 };
