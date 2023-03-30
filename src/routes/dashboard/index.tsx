@@ -1,11 +1,21 @@
-import { Component, onCleanup, onMount, Show } from "solid-js";
+import { Component, For, onCleanup, onMount, Show } from "solid-js";
 import { A } from "@solidjs/router";
+import { createStore } from "solid-js/store";
 import { pb } from "../../utils/pocketbase";
 import { useUser } from "../../contexts/UserContext";
 import styles from "./styles.module.css";
 
+interface Paper {
+    id: string;
+    title: string;
+    description: string;
+    author: any;
+}
+
 const Dashboard: Component = () => {
     const { user, isVerified, setIsVerified } = useUser();
+
+    const [papers, setPapers] = createStore<Paper[]>([]);
 
     onMount(() => {
         if (!user()) {
@@ -22,6 +32,25 @@ const Dashboard: Component = () => {
                 }
             }
         );
+    });
+
+    onMount(async () => {
+        const res = await pb.collection("papers").getFullList({
+            sort: "-created", // sort by created in the reverse order (latest first)
+            expand: "author",
+        });
+
+        for (let i = 0; i < res.length; i++) {
+            setPapers([
+                ...papers,
+                {
+                    id: res[i].id,
+                    title: res[i].title,
+                    description: res[i].description,
+                    author: res[i].expand.author,
+                },
+            ]);
+        }
     });
 
     onCleanup(() => pb.collection("users").unsubscribe(user()!.id));
@@ -60,7 +89,42 @@ const Dashboard: Component = () => {
                     }
                 >
                     <div class={styles.grid}>
-                        {/* // TODO: https://www.solidjs.com/tutorial/flow_for */}
+                        <For each={papers}>
+                            {(paper, i) => (
+                                <A
+                                    href={`/paper/${paper.id}`}
+                                    class={styles.paper}
+                                >
+                                    <p
+                                        style={{
+                                            "font-size": "1.2rem",
+                                            "font-weight": 800,
+                                            width: "100%",
+                                            "text-align": "left",
+                                        }}
+                                    >
+                                        {paper.title}
+                                    </p>
+                                    <p
+                                        style={{
+                                            width: "100%",
+                                            "text-align": "left",
+                                        }}
+                                    >
+                                        {paper.description}
+                                    </p>
+                                    <p
+                                        style={{
+                                            width: "100%",
+                                            "text-align": "right",
+                                            "font-style": "italic",
+                                        }}
+                                    >
+                                        {paper.author.username}
+                                    </p>
+                                </A>
+                            )}
+                        </For>
                     </div>
                 </Show>
             </Show>
