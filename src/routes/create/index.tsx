@@ -182,7 +182,7 @@ const Create: Component = () => {
                 <A href="/dashboard" class={styles.buttonText}>
                     &lt;
                 </A>
-                <p>Create Paper</p>
+                <p>Dashboard</p>
             </header>
 
             <div class={styles.topInputs}>
