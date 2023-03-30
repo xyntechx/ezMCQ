@@ -6,3 +6,14 @@
     justify-content: center;
     flex-direction: column;
 }
+
+.link {
+    padding: 0;
+    margin: 0;
+    text-decoration: underline;
+    transition: 0.15s;
+}
+
+.link:hover {
+    color: var(--color-light);
+}
