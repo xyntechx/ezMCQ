@@ -37,7 +37,7 @@ backend/pocketbase-linux serve
 
 Windows:
 ```bash
-backend/pocketbase-windows serve
+backend/pocketbase-windows.exe serve
 ```
 
 macOS x64:
